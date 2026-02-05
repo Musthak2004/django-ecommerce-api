@@ -1,20 +1,86 @@
 {% extends "base.html" %}
-<!--               -->
+<!--                      -->
 {% block title %}Home{% endblock title %}
-<!--               -->
+<!--                     -->
 {% block content %}
-<!--                        -->
-{% if user.is_authenticated %}
-Hi {{ user.username }} !
-<p><form action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+  <!-- Left content -->
+  <div>
+    <p class="text-sm text-green-600 font-semibold mb-1">Limited-Time Offer</p>
+    <h1 class="text-3xl md:text-4xl font-bold leading-snug mb-3">
+      Get 20% off on <br />
+      <span class="text-gray-900">select items!</span>
+    </h1>
+    <p class="text-gray-600 mb-4">
+      Upgrade your home with stylish furniture. Grab this limited deal before it
+      ends!
+    </p>
+
+    <div class="flex gap-3">
+      <a
+        href="#"
+        class="bg-black text-white px-5 py-2.5 rounded hover:bg-gray-800 transition"
+      >
+        Get Yours Now
+      </a>
+      <a
+        href="#"
+        class="border px-5 py-2.5 rounded hover:bg-gray-100 transition"
+      >
+        Discover More
+      </a>
+    </div>
+
+    {% if user.is_authenticated %}
+    <p class="mt-6 text-green-700 font-medium">Hi {{ user.username }} 👋</p>
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button
+        class="bg-green-600 text-white px-5 py-2.5 rounded hover:bg-green-700 transition"
+        type="submit"
+      >
         Log Out
-    </button>
-</form></p>
-{% else %}
-<p>You are not logged in! </p>
-<p><a href="{% url 'login' %}">Log In</a> | 
-<a href="{% url 'signup' %}">Sign Up</a></p>
-{% endif %}
+      </button>
+    </form>
+    {% else %}
+    <div class="mt-6 flex gap-3">
+      <a
+        href="{% url 'login' %}"
+        class="bg-green-600 text-white px-5 py-2.5 rounded hover:bg-green-700 transition"
+      >
+        Log In
+      </a>
+      <a
+        href="{% url 'signup' %}"
+        class="border px-5 py-2.5 rounded hover:bg-gray-100 transition"
+      >
+        Sign Up
+      </a>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Right product -->
+  <div class="relative flex justify-center items-center">
+    <!-- Background circle -->
+    <div class="bg-gray-100 rounded-full w-72 h-72 absolute -z-10"></div>
+
+    <!-- Watch image with hover zoom -->
+    <div class="relative w-60 h-60 overflow-hidden rounded-lg shadow-lg z-10">
+      <img
+        src="static/images/watch.jpg"
+        alt="Cristal Watch"
+        class="w-full h-full object-cover transform transition duration-500 hover:scale-105"
+      />
+
+      <!-- Overlay for name & price -->
+      <div
+        class="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent text-white p-3"
+      >
+        <p class="font-semibold text-sm">Cristal Watch</p>
+        <p class="text-xs">Rs3500.00</p>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
