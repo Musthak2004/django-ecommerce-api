@@ -1,14 +1,59 @@
 {% extends "base.html" %}
-<!--              -->
-{% block title %}Home{% endblock title %}
-<!--                   -->
-{% block content %} {% if user.is_authenticated %} Hi {{ user.username }}!
-<form method="post" action="{% url 'logout' %}">
-  {% csrf_token %}
-  <button type="submit">Log Out</button>
-</form>
-{% else %}
-<p>You are not logged in</p>
-<a href="{% url 'login' %}">Log In</a>
-<a href="{% url 'signup' %}">Sign Up</a>
-{% endif %} {% endblock content %}
+<!--                      -->
+{% block title %}JSY - The Gift of Good Style{% endblock %}
+<!--                                 -->
+{% block content %}
+
+<!-- Hero Section -->
+<section
+  class="relative bg-gradient-to-br from-rose-50 via-purple-50 to-amber-50 py-16 md:py-24 overflow-hidden"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <!-- Left: Text + CTA -->
+      <div class="space-y-8 text-center md:text-left">
+        <h1
+          class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight"
+        >
+          The Gift of<br />
+          <span class="text-purple-600">Good Style</span>
+        </h1>
+
+        <p class="text-lg md:text-xl text-gray-600 max-w-xl mx-auto md:mx-0">
+          Discover candles, home accents, and thoughtful gifts that bring warmth
+          and personality to every space.
+        </p>
+
+        <div class="pt-4">
+          <a
+            href="#"
+            class="inline-block bg-purple-600 text-white font-medium px-8 py-4 rounded-full text-lg hover:bg-purple-700 transition shadow-lg hover:shadow-xl"
+          >
+            Shop Now
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Hero Image (candles) -->
+      <div class="relative flex justify-center">
+        <!-- Placeholder for your candle image – replace src with real one -->
+        <img
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+          alt="Colorful twisted spiral candles on stands"
+          class="w-full max-w-md rounded-2xl shadow-2xl object-cover aspect-[4/5] md:aspect-square transform md:rotate-3 hover:rotate-0 transition duration-500"
+        />
+        <!-- Optional decorative elements -->
+        <div
+          class="absolute -top-6 -right-6 w-24 h-24 bg-pink-300 rounded-full blur-3xl opacity-40"
+        ></div>
+        <div
+          class="absolute -bottom-8 -left-8 w-32 h-32 bg-purple-300 rounded-full blur-3xl opacity-30"
+        ></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Optional: Quick categories teaser below hero -->
+
+{% endblock %}

@@ -1,11 +1,152 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}Ecommerce App{% endblock title %}</title>
+    <title>{% block title %}JSY - Modern Home & Living{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#fdf4ff",
+                100: "#fae8ff",
+                200: "#f5d0fe",
+                300: "#f0abfc",
+                400: "#e879f9",
+                500: "#c026d3",
+                // add more if you want custom pastel palette
+              },
+            },
+          },
+        },
+      };
+    </script>
   </head>
-  <body>
-    <main>{% block content %}{% endblock content %}</main>
+  <body
+    class="bg-gradient-to-b from-pink-50 via-purple-50 to-white min-h-screen antialiased"
+  >
+    <!-- Navbar -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <!-- Logo -->
+          <div class="flex-shrink-0">
+            <a
+              href="{% url 'home' %}"
+              class="text-2xl font-bold text-purple-600"
+              >MSK</a
+            >
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex space-x-10">
+            <a
+              href="{% url 'home' %}"
+              class="text-gray-700 hover:text-purple-600 transition"
+              >Home</a
+            >
+            <a
+              href="{% url 'category_list' %}"
+              class="text-gray-700 hover:text-purple-600 transition"
+              >Store</a
+            >
+            <a
+              href="{% url 'category_list' %}"
+              class="text-gray-700 hover:text-purple-600 transition"
+              >Orders</a
+            >
+            <a href="#" class="text-gray-700 hover:text-purple-600 transition"
+              >Profile</a
+            >
+          </div>
+
+          <!-- Right side: Search + Cart + Auth -->
+          <div class="flex items-center space-x-6">
+            <div class="relative hidden md:block">
+              <input
+                type="text"
+                placeholder="Search"
+                class="pl-10 pr-4 py-2 bg-gray-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
+              />
+              <svg
+                class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+
+            <a href="#" class="text-gray-700 hover:text-purple-600">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <span class="sr-only">Cart (0)</span>
+            </a>
+
+            <!-- Auth -->
+            {% if user.is_authenticated %}
+            <div class="flex items-center space-x-3">
+              <span class="text-sm text-gray-700">Hi, {{ user.username }}</span>
+              <form method="post" action="{% url 'logout' %}" class="inline">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="text-sm text-gray-600 hover:text-purple-600"
+                >
+                  Log out
+                </button>
+              </form>
+            </div>
+            {% else %}
+            <a
+              href="{% url 'login' %}"
+              class="text-sm text-gray-700 hover:text-purple-600"
+              >Log in</a
+            >
+            <a
+              href="{% url 'signup' %}"
+              class="text-sm bg-purple-600 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition"
+              >Sign up</a
+            >
+            {% endif %}
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="min-h-[calc(100vh-128px)]">
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Simple Footer -->
+    <footer class="bg-white border-t mt-12 py-8">
+      <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+        <p>Free shipping on orders over $75. Subscribe for updates.</p>
+        <p class="mt-2">
+          &copy; {{ year|default:"2026" }} JSY. All rights reserved.
+        </p>
+      </div>
+    </footer>
   </body>
 </html>
