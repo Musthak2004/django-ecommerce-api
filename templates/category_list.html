@@ -11,22 +11,37 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {% for category in categories %}
       <div
-        class="group bg-gray-50 rounded-2xl overflow-hidden shadow hover:shadow-xl transition"
+        class="group bg-gray-50 rounded-2xl overflow-hidden shadow hover:shadow-xl transition-all duration-300"
       >
         <div
-          class="aspect-[4/3] bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center"
+          class="aspect-[4/3] overflow-hidden relative bg-gradient-to-br from-purple-100 to-pink-100"
         >
-          <!-- Category image if you add later -->
-          <span class="text-6xl opacity-30">🕯️</span>
+          {% if category.image %}
+          <img
+            src="{{ category.image.url }}"
+            alt="{{ category.name }} collection"
+            class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-out"
+            loading="lazy"
+          />
+          {% else %}
+          <!-- Fallback same as before - no sudden change -->
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-6xl opacity-30">🕯️</span>
+          </div>
+          {% endif %}
         </div>
         <div class="p-6 text-center">
-          <h3 class="text-xl font-semibold group-hover:text-purple-600">
-            {{ category.name }}
+          <h3
+            class="text-xl font-semibold group-hover:text-purple-600 transition-colors duration-300"
+          >
+            <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
           </h3>
         </div>
       </div>
       {% empty %}
-      <p class="col-span-full text-center">No collections available yet.</p>
+      <p class="col-span-full text-center text-gray-600 py-12">
+        No collections available yet.
+      </p>
       {% endfor %}
     </div>
   </div>
