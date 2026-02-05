@@ -1,77 +1,14 @@
 {% extends "base.html" %}
-<!--                     -->
-{% load static %}
-<!--                             -->
-{% block title %}MSK – The Gift of Good Style{% endblock %} {% block content %}
-<section class="relative bg-[#f9f7f4] py-16 lg:py-32">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-      <!-- Left: Text -->
-      <div class="space-y-8 lg:space-y-12">
-        <h1
-          class="text-5xl lg:text-7xl font-medium leading-tight tracking-tight text-gray-900"
-        >
-          The Gift of<br />Good Style
-        </h1>
-
-        <p class="text-xl lg:text-2xl text-gray-600 max-w-xl">
-          Discover thoughtful pieces that bring joy and elegance to everyday
-          moments.
-        </p>
-
-        <a
-          href="#"
-          class="inline-block bg-gray-900 text-white px-10 py-5 rounded-full font-medium text-lg hover:bg-gray-800 transition mt-4"
-        >
-          Shop Now
-        </a>
-      </div>
-
-      <!-- Right: Hero Image -->
-      <div class="relative">
-        <div
-          class="aspect-[4/5] lg:aspect-square overflow-hidden rounded-3xl shadow-2xl"
-        >
-          <img
-            src="{% static 'images/candles.webp' %}"
-            alt="Pastel twisted candles aesthetic"
-            class="w-full h-full object-cover transform transition duration-700 hover:scale-105"
-          />
-        </div>
-        <!-- Optional subtle overlay text or badge if you want -->
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Auth section (kept from before) -->
-<div class="max-w-7xl mx-auto px-6 py-12 text-center">
-  {% if user.is_authenticated %}
-  <p class="text-2xl text-gray-700">Welcome back, {{ user.username }} 🌿</p>
-  <form method="post" action="{% url 'logout' %}" class="mt-6 inline-block">
-    {% csrf_token %}
-    <button
-      type="submit"
-      class="bg-gray-800 text-white px-8 py-4 rounded-full hover:bg-gray-900 transition"
-    >
-      Log Out
-    </button>
-  </form>
-  {% else %}
-  <div class="flex flex-wrap justify-center gap-6">
-    <a
-      href="{% url 'login' %}"
-      class="bg-gray-900 text-white px-10 py-5 rounded-full font-medium hover:bg-gray-800 transition"
-    >
-      Log In
-    </a>
-    <a
-      href="{% url 'signup' %}"
-      class="border-2 border-gray-900 text-gray-900 px-10 py-5 rounded-full font-medium hover:bg-gray-50 transition"
-    >
-      Sign Up
-    </a>
-  </div>
-  {% endif %}
-</div>
-{% endblock %}
+<!--              -->
+{% block title %}Home{% endblock title %}
+<!--                   -->
+{% block content %} {% if user.is_authenticated %} Hi {{ user.username }}!
+<form method="post" action="{% url 'logout' %}">
+  {% csrf_token %}
+  <button type="submit">Log Out</button>
+</form>
+{% else %}
+<p>You are not logged in</p>
+<a href="{% url 'login' %}">Log In</a>
+<a href="{% url 'signup' %}">Sign Up</a>
+{% endif %} {% endblock content %}
