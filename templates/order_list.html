@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+<!--                      -->
+
+{% block title %}My Orders{% endblock title %}
+<!--                             -->
+
+{% block content %}
+<section class="py-12 md:py-16 bg-white min-h-screen">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900">My Orders</h1>
+      <p class="mt-3 text-gray-600">
+        Track your recent purchases and candle deliveries 🕯️
+      </p>
+    </div>
+
+    <!-- Orders List -->
+    {% if orders %}
+    <div class="space-y-6">
+      {% for order in orders %}
+      <div
+        class="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+      >
+        <div
+          class="p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+        >
+          <!-- Left: Order Info -->
+          <div class="flex-1 space-y-3">
+            <div
+              class="flex items-center justify-between md:justify-start gap-4"
+            >
+              <h3 class="text-xl font-semibold text-gray-900">
+                Order #{{ order.id }}
+              </h3>
+
+              {% if order.status == "Delivered" %}
+              <span
+                class="inline-flex items-center px-4 py-1 rounded-full bg-green-100 text-green-800 text-sm font-medium"
+              >
+                Delivered
+              </span>
+              {% elif order.status == "Shipped" %}
+              <span
+                class="inline-flex items-center px-4 py-1 rounded-full bg-blue-100 text-blue-800 text-sm font-medium"
+              >
+                Shipped
+              </span>
+              {% elif order.status == "Pending" or order.status == "Processing"
+              %}
+              <span
+                class="inline-flex items-center px-4 py-1 rounded-full bg-yellow-100 text-yellow-800 text-sm font-medium"
+              >
+                {{ order.status }}
+              </span>
+              {% elif order.status == "Cancelled" %}
+              <span
+                class="inline-flex items-center px-4 py-1 rounded-full bg-red-100 text-red-800 text-sm font-medium"
+              >
+                Cancelled
+              </span>
+              {% else %}
+              <span
+                class="inline-flex items-center px-4 py-1 rounded-full bg-gray-100 text-gray-800 text-sm font-medium"
+              >
+                {{ order.status }}
+              </span>
+              {% endif %}
+            </div>
+
+            <p class="text-gray-600">
+              Placed on: {{ order.created_at|date:"F d, Y" }} at {{
+              order.created_at|time:"H:i" }}
+            </p>
+
+            <!-- Optional: total amount if you have it in model -->
+            <!-- <p class="text-lg font-medium text-purple-700">
+              Total: ₹{{ order.total_amount|floatformat:2 }}
+            </p> -->
+          </div>
+
+          <!-- Right: Action -->
+          <a
+            href="#"
+            class="inline-flex items-center justify-center px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl transition duration-300 shadow-md hover:shadow-lg min-w-[140px] text-center"
+          >
+            View Details
+          </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div
+      class="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-300"
+    >
+      <div class="text-6xl opacity-30 mb-6">🕯️</div>
+      <h3 class="text-2xl font-semibold text-gray-700 mb-3">No orders yet</h3>
+      <p class="text-gray-500 mb-8 max-w-md mx-auto">
+        Your candle collection is waiting! Start shopping our cozy scents.
+      </p>
+      <a
+        href="#"
+        class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-8 rounded-xl transition duration-300"
+      >
+        Browse Collections
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock content %}
