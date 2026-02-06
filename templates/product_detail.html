@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+<!--                        -->
+
+{% block title %}{{ product.name }} - Premium Scented Candle{% endblock title %}
+<!--                       -->
+
+{% block content %}
+<section class="py-12 md:py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+      <!-- Product Image Section -->
+      <div class="sticky top-20 lg:top-24">
+        <div
+          class="rounded-2xl overflow-hidden shadow-2xl border border-gray-100 bg-gradient-to-br from-purple-50 to-pink-50"
+        >
+          {% if product.image %}
+          <img
+            src="{{ product.image.url }}"
+            alt="{{ product.name }}"
+            class="w-full h-auto object-cover object-center transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+          />
+          {% else %}
+          <div class="aspect-square flex items-center justify-center">
+            <span class="text-8xl opacity-20">🕯️</span>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Optional: small gallery thumbnails if multiple images later -->
+        <!-- <div class="mt-6 grid grid-cols-4 gap-4">
+          ... thumbnails here ...
+        </div> -->
+      </div>
+
+      <!-- Product Info Section -->
+      <div class="space-y-8">
+        <div>
+          <h1
+            class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4"
+          >
+            {{ product.name }}
+          </h1>
+
+          <div class="flex items-center space-x-4 mb-6">
+            <p class="text-4xl md:text-5xl font-bold text-purple-700">
+              ₹{{ product.price|floatformat:2 }}
+            </p>
+
+            {% if product.stock > 0 %}
+            <span
+              class="inline-flex items-center px-4 py-1 rounded-full bg-green-100 text-green-800 text-sm font-medium"
+            >
+              In Stock ({{ product.stock }})
+            </span>
+            {% else %}
+            <span
+              class="inline-flex items-center px-4 py-1 rounded-full bg-red-100 text-red-800 text-sm font-medium"
+            >
+              Out of Stock
+            </span>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="prose prose-lg text-gray-700 max-w-none">
+          <p>{{ product.description|linebreaks }}</p>
+          <!-- If you have more details like scent notes, burn time etc. -->
+          <!-- <ul class="mt-6 space-y-2">
+            <li>✓ 100% Soy Wax</li>
+            <li>✓ 40-50 hour burn time</li>
+            ...
+          </ul> -->
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-6 border-t border-gray-200">
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button
+              class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              {%
+              if
+              product.stock=""
+              ="0"
+              %}disabled{%
+              endif
+              %}
+            >
+              Add to Cart
+            </button>
+
+            <button
+              class="flex-1 bg-white border-2 border-purple-600 text-purple-600 font-semibold py-4 px-8 rounded-xl hover:bg-purple-50 transition duration-300"
+            >
+              Add to Wishlist
+            </button>
+          </div>
+
+          <p class="mt-4 text-sm text-gray-500 text-center">
+            Free shipping on orders over ₹999 • Secure checkout
+          </p>
+        </div>
+
+        <!-- Trust badges or extra info -->
+        <div
+          class="grid grid-cols-3 gap-4 pt-8 text-center text-sm text-gray-600"
+        >
+          <div>
+            <span class="block text-2xl mb-1">🕯️</span>
+            Hand Poured
+          </div>
+          <div>
+            <span class="block text-2xl mb-1">🌿</span>
+            Natural Ingredients
+          </div>
+          <div>
+            <span class="block text-2xl mb-1">♻️</span>
+            Eco-Friendly
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

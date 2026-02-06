@@ -21,7 +21,7 @@
     >
       {% for product in products %}
       <a
-        href="#"
+        href="{{ product.get_absolute_url }}"
         class="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 flex flex-col h-full"
       >
         <!-- Product Image -->
