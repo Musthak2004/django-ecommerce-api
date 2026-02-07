@@ -77,18 +77,26 @@
         <!-- Action Buttons -->
         <div class="pt-6 border-t border-gray-200">
           <div class="flex flex-col sm:flex-row gap-4">
-            <button
-              class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-              {%
-              if
-              product.stock=""
-              ="0"
-              %}disabled{%
-              endif
-              %}
+            <form
+              method="post"
+              action="{% url 'add_to_cart' product.id %}"
+              class="flex-1"
             >
-              Add to Cart
-            </button>
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-4 px-8 rounded-xl transition duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                {%
+                if
+                product.stock=""
+                ="0"
+                %}disabled{%
+                endif
+                %}
+              >
+                Add to Cart
+              </button>
+            </form>
 
             <button
               class="flex-1 bg-white border-2 border-purple-600 text-purple-600 font-semibold py-4 px-8 rounded-xl hover:bg-purple-50 transition duration-300"

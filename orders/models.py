@@ -48,7 +48,7 @@ class Order(models.Model):
 
     @property
     def total(self):
-        return self.subtotal + self.shipping_amount - self.discount_amount
+        return (self.subtotal + self.shipping_amount) - self.discount_amount
 
     def __str__(self):
         return f"Order #{self.id} - {self.user.email}"
