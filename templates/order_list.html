@@ -68,10 +68,7 @@
               {% endif %}
             </div>
 
-            <p class="text-gray-600">
-              Placed on: {{ order.created_at|date:"F d, Y" }} at {{
-              order.created_at|time:"H:i" }}
-            </p>
+            <p class="text-gray-600">Placed on: {{ order.created_at }}</p>
 
             <!-- Optional: total amount if you have it in model -->
             <!-- <p class="text-lg font-medium text-purple-700">
@@ -81,7 +78,7 @@
 
           <!-- Right: Action -->
           <a
-            href="#"
+            href="{{ order.get_absolute_url }}"
             class="inline-flex items-center justify-center px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-xl transition duration-300 shadow-md hover:shadow-lg min-w-[140px] text-center"
           >
             View Details
@@ -101,7 +98,7 @@
         Your candle collection is waiting! Start shopping our cozy scents.
       </p>
       <a
-        href="#"
+        href="{% url 'category_list' %}"
         class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-8 rounded-xl transition duration-300"
       >
         Browse Collections

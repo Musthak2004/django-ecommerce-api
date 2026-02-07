@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+<!--                         -->
+
+{% block title %}Order #{{ order.id }} - Details{% endblock %}
+<!--                        -->
+
+{% block content %}
+<section class="py-12 md:py-16 bg-white min-h-screen">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center md:text-left mb-10">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900">
+        Order #{{ order.id }}
+      </h1>
+      <p class="mt-2 text-gray-600">Placed on {{ order.created_at }}</p>
+    </div>
+
+    <!-- Status Badge & Quick Info -->
+    <div class="mb-10">
+      {% if order.status == "Delivered" %}
+      <span
+        class="inline-flex items-center px-6 py-2 rounded-full bg-green-100 text-green-800 text-lg font-medium"
+      >
+        ✓ Delivered
+      </span>
+      {% elif order.status == "Shipped" %}
+      <span
+        class="inline-flex items-center px-6 py-2 rounded-full bg-blue-100 text-blue-800 text-lg font-medium"
+      >
+        🚚 Shipped
+      </span>
+      {% elif order.status == "Processing" or order.status == "Pending" %}
+      <span
+        class="inline-flex items-center px-6 py-2 rounded-full bg-yellow-100 text-yellow-800 text-lg font-medium"
+      >
+        ⏳ Processing
+      </span>
+      {% elif order.status == "Cancelled" %}
+      <span
+        class="inline-flex items-center px-6 py-2 rounded-full bg-red-100 text-red-800 text-lg font-medium"
+      >
+        Cancelled
+      </span>
+      {% else %}
+      <span
+        class="inline-flex items-center px-6 py-2 rounded-full bg-gray-100 text-gray-800 text-lg font-medium"
+      >
+        {{ order.status }}
+      </span>
+      {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+      <!-- Left: Order Items -->
+      <div class="lg:col-span-2 space-y-8">
+        <div
+          class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden"
+        >
+          <div class="p-6 md:p-8 border-b border-gray-100">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+              Your Items 🕯️
+            </h2>
+
+            {% if order.items.exists %}
+            <div class="space-y-6">
+              {% for item in order.items.all %}
+              <div class="flex flex-col sm:flex-row gap-6 items-start">
+                <div
+                  class="w-32 h-32 sm:w-40 sm:h-40 flex-shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50"
+                >
+                  {% if item.product.image %}
+                  <img
+                    src="{{ item.product.image.url }}"
+                    alt="{{ item.product.name }}"
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  {% else %}
+                  <div class="w-full h-full flex items-center justify-center">
+                    <span class="text-5xl opacity-30">🕯️</span>
+                  </div>
+                  {% endif %}
+                </div>
+
+                <div class="flex-1 space-y-2">
+                  <h3
+                    class="text-xl font-semibold text-gray-900 group-hover:text-purple-700"
+                  >
+                    {{ item.product.name }}
+                  </h3>
+                  <p class="text-gray-600">
+                    Qty: {{ item.quantity }} × ₹{{ item.unit_price|floatformat:2
+                    }}
+                  </p>
+                  <p class="text-lg font-bold text-purple-700">
+                    ₹{{ item.subtotal|floatformat:2 }}
+                  </p>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-12 text-gray-500">
+              <p>No items found in this order (check OrderItem model)</p>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Summary Sidebar -->
+      <div class="space-y-8 lg:sticky lg:top-20 h-fit">
+        <!-- Order Summary Card -->
+        <div
+          class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 md:p-8"
+        >
+          <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+            Order Summary
+          </h2>
+
+          <dl class="space-y-4 text-gray-700">
+            <div class="flex justify-between">
+              <dt>Subtotal</dt>
+              <dd class="font-medium">
+                ₹{{ order.subtotal|default:order.total|floatformat:2 }}
+              </dd>
+            </div>
+            <div class="flex justify-between">
+              <dt>Shipping</dt>
+              <dd class="font-medium">
+                ₹{{ order.shipping_amount|default:"0.00"|floatformat:2 }}
+              </dd>
+            </div>
+            {% if order.discount_amount %}
+            <div class="flex justify-between text-green-600">
+              <dt>Discount</dt>
+              <dd>-₹{{ order.discount_amount|floatformat:2 }}</dd>
+            </div>
+            {% endif %}
+            <div
+              class="flex justify-between pt-4 border-t border-gray-200 text-lg font-bold text-gray-900"
+            >
+              <dt>Total</dt>
+              <dd>₹{{ order.total|floatformat:2 }}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <!-- Shipping & Payment -->
+        <div
+          class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 md:p-8 space-y-6"
+        >
+          <div>
+            <h3 class="text-lg font-semibold mb-3">Shipping Address</h3>
+            <p class="text-gray-700">{{ user.address }}</p>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-3">Payment Method</h3>
+            <p class="text-gray-700">
+              {{ order.payment_method|default:"Paid via Razorpay /
+              COD"|linebreaks }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Help / Actions -->
+        <div class="text-center space-y-4">
+          <a
+            href="#"
+            class="inline-block text-purple-600 hover:text-purple-800 font-medium"
+          >
+            Need help with this order?
+          </a>
+          <br />
+          <a
+            href="{% url 'category_list' %}"
+            class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-8 rounded-xl transition duration-300"
+          >
+            Continue Shopping
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
