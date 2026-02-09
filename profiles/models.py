@@ -31,7 +31,17 @@ class Profile(models.Model):
     def get_absolute_url(self):
         return reverse("profile_detail", kwargs={"slug": self.slug})
     
+    from django.utils.text import slugify
+
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.user.username)
+            base_slug = slugify(self.user.username)
+            slug = base_slug
+            count = 1
+            while Profile.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{count}"
+                count += 1
+            self.slug = slug
         super().save(*args, **kwargs)
+
+

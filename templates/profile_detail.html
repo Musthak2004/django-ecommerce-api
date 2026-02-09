@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+<!--                       -->
+{% block title %}{{ profile.user.username }}'s Profile - MSK{% endblock %}
+<!--                           -->
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <!-- Profile Header / Card -->
+  <div
+    class="bg-white rounded-2xl shadow-lg overflow-hidden border border-purple-100"
+  >
+    <!-- Cover / Banner area (optional - இப்போ simple gradient) -->
+    <div
+      class="h-32 bg-gradient-to-r from-purple-400 via-pink-400 to-purple-500"
+    ></div>
+
+    <div class="relative px-6 pb-10 pt-0">
+      <!-- Profile Picture + Name -->
+      <div
+        class="flex flex-col sm:flex-row items-center sm:items-end -mt-16 gap-6"
+      >
+        <!-- Avatar -->
+        <div class="relative">
+          {% if profile.profile_pic %}
+          <img
+            src="{{ profile.profile_pic.url }}"
+            alt="{{ profile.user.username }}"
+            class="w-32 h-32 rounded-full border-4 border-white shadow-xl object-cover"
+          />
+          {% else %}
+          <div
+            class="w-32 h-32 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-5xl font-bold shadow-xl border-4 border-white"
+          >
+            {{ profile.user.username|slice:":1"|upper }}
+          </div>
+          {% endif %}
+
+          <!-- Edit button (optional - நீ login ஆன user-க்கு மட்டும் காட்டணும்னா condition போடு) -->
+          {% if user == profile.user %}
+          <a
+            href="#"
+            class="absolute bottom-2 right-2 bg-purple-600 text-white p-2 rounded-full shadow hover:bg-purple-700 transition"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+              />
+            </svg>
+          </a>
+          {% endif %}
+        </div>
+
+        <!-- Name & Username -->
+        <div class="text-center sm:text-left">
+          <h1 class="text-3xl font-bold text-gray-900">
+            {{ profile.user.username }}
+          </h1>
+          <p class="text-gray-500 mt-1">@{{ profile.user.username|lower }}</p>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      {% if profile.bio %}
+      <div class="mt-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">About</h2>
+        <p class="text-gray-700 leading-relaxed">
+          {{ profile.bio|linebreaks }}
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- Personal Info Grid -->
+      <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {% if profile.gender %}
+        <div class="bg-purple-50 rounded-xl p-5 border border-purple-100">
+          <h3
+            class="text-sm font-medium text-purple-700 uppercase tracking-wide"
+          >
+            Gender
+          </h3>
+          <p class="mt-2 text-gray-800 text-lg">{{ profile.gender }}</p>
+        </div>
+        {% endif %} {% if profile.date_of_birth %}
+        <div class="bg-purple-50 rounded-xl p-5 border border-purple-100">
+          <h3
+            class="text-sm font-medium text-purple-700 uppercase tracking-wide"
+          >
+            Date of Birth
+          </h3>
+          <p class="mt-2 text-gray-800 text-lg">
+            {{ profile.date_of_birth|date:"F d, Y" }}
+            <span class="text-gray-500 text-sm ml-2">
+              ({{ profile.date_of_birth|timesince }} old)
+            </span>
+          </p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Extra space / future sections -->
+      <div class="mt-12 pt-8 border-t border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">
+          My Orders & Activity
+        </h2>
+        <p class="text-gray-600">You can view your recent orders here.</p>
+        <a
+          href="{% url 'order_list' %}"
+          class="mt-4 inline-block bg-purple-600 text-white px-6 py-3 rounded-full hover:bg-purple-700 transition"
+        >
+          View Orders
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
