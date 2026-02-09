@@ -58,16 +58,14 @@
               >Orders</a
             >
             {% if user.is_authenticated %}
-            <!--                     -->
+            <!--                      -->
             {% if user.profile and user.profile.slug %}
             <a
               href="{% url 'profile_detail' user.profile.slug %}"
               class="text-gray-700 hover:text-purple-600 transition"
               >My Profile</a
             >
-            {% endif %}
-            <!--                                -->
-            {% endif %}
+            {% endif %} {% endif %}
           </div>
 
           <!-- Right side: Search + Cart + Auth -->
@@ -110,21 +108,18 @@
               <span class="sr-only">Cart (0)</span>
             </a>
 
-            <!-- Auth / Profile Dropdown (மாற்றம் இங்க மட்டும்) -->
+            <!-- Auth / Profile Dropdown -->
             {% if user.is_authenticated %}
             <div class="relative group">
               <button class="flex items-center space-x-2 focus:outline-none">
-                <!-- Avatar with initial -->
                 <div
                   class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-medium text-sm"
                 >
                   {{ user.username|slice:":1"|upper }}
                 </div>
-                <!-- Username visible only on larger screens -->
                 <span class="hidden md:inline text-sm text-gray-700">
                   {{ user.username }}
                 </span>
-                <!-- Small down arrow -->
                 <svg
                   class="w-4 h-4 text-gray-500 group-hover:text-purple-600 transition-transform group-hover:rotate-180"
                   fill="none"
@@ -140,28 +135,80 @@
                 </svg>
               </button>
 
-              <!-- Dropdown -->
+              <!-- Main Dropdown -->
               <div
-                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50"
+                class="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-xl border border-gray-200 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50"
               >
+                {% if user.profile and user.profile.slug %}
                 <a
                   href="{% url 'profile_detail' user.profile.slug %}"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700"
+                  class="block px-5 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700"
                 >
                   My Profile
                 </a>
+                {% endif %}
+
+                <!-- Settings with sub-menu (hover based) -->
+                <div class="relative group/sub">
+                  <a
+                    href="#"
+                    class="flex items-center justify-between px-5 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700"
+                  >
+                    Settings
+                    <svg
+                      class="w-4 h-4 text-gray-400 group-hover/sub:text-purple-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </a>
+
+                  <!-- Sub Dropdown (right side) -->
+                  <div
+                    class="absolute top-0 left-full ml-1 w-56 bg-white rounded-md shadow-xl border border-gray-200 py-2 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-150 z-50"
+                  >
+                    <a
+                      href="#"
+                      class="block px-5 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700"
+                    >
+                      Edit Profile
+                    </a>
+                    <a
+                      href="#"
+                      class="block px-5 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700"
+                    >
+                      Change Password
+                    </a>
+                    <a
+                      href="#"
+                      class="block px-5 py-2.5 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      Delete Account
+                    </a>
+                  </div>
+                </div>
+
                 <a
                   href="{% url 'order_list' %}"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700"
+                  class="block px-5 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700"
                 >
                   My Orders
                 </a>
-                <div class="border-t border-gray-100 my-1"></div>
+
+                <div class="border-t border-gray-100 my-2"></div>
+
                 <form method="post" action="{% url 'logout' %}">
                   {% csrf_token %}
                   <button
                     type="submit"
-                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    class="block w-full text-left px-5 py-2.5 text-sm text-red-600 hover:bg-red-50"
                   >
                     Log out
                   </button>
@@ -191,10 +238,10 @@
       {% block content %}{% endblock %}
     </main>
 
-    <!-- Simple Footer -->
+    <!-- Footer -->
     <footer class="bg-white border-t mt-12 py-8">
       <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
-        <p>Free shipping on orders over Rs.1000. Subscribe for updates.</p>
+        <p>Free shipping on orders over Rs.1999. Subscribe for updates.</p>
         <p class="mt-2">
           © {{ year|default:"2026" }} MSK. All rights reserved.
         </p>
