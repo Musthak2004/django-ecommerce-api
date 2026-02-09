@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'pages.apps.PagesConfig',
     'profiles.apps.ProfilesConfig',
+    'addresses.apps.AddressesConfig',
 ]
 
 MIDDLEWARE = [
