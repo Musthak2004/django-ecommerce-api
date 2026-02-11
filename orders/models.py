@@ -20,6 +20,7 @@ class Order(models.Model):
         related_name="orders"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     status = models.CharField(
         max_length=20,
@@ -55,6 +56,9 @@ class Order(models.Model):
 
     def get_absolute_url(self):
         return reverse("order_detail", args=[self.id])
+    
+    def is_paid(self):
+        return self.status == "paid"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(
