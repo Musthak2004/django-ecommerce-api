@@ -25,7 +25,8 @@ class Order(models.Model):
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
-        default="pending"
+        default="pending",
+        db_index=True
     )
 
     shipping_amount = models.DecimalField(
@@ -40,12 +41,31 @@ class Order(models.Model):
         default=0
     )
 
+    shipping_address = models.ForeignKey(
+        "addresses.Address",
+        related_name="shipping_orders",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    billing_address = models.ForeignKey(
+        "addresses.Address",
+        related_name="billing_orders",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
     @property
     def subtotal(self):
         return sum(
             item.get_total_price()
             for item in self.items.all()
-    )
+        )
 
     @property
     def total(self):
