@@ -74,7 +74,7 @@ Profile{% endblock %} {% block content %}
       {% if user == profile.user %}
       <div class="mt-10 text-center">
         <a
-          href="#"
+          href="{% url 'profile_edit' %}"
           class="inline-flex items-center gap-2 bg-purple-600 text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-purple-700 hover:shadow-xl transition-all transform hover:-translate-y-1"
         >
           <svg
