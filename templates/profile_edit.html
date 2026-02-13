@@ -1,11 +1,154 @@
 {% extends "base.html" %}
-<!--                       -->
-{% block title %}Profile-edit page{% endblock title %}
-<!--                  -->
+<!--                    -->
+{% block title %}Edit Profile - MSK{% endblock %}
+<!--                               -->
+
 {% block content %}
-<h2>Profile Edit Here!</h2>
-<form method="POST">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Update</button>
-</form>
-{% endblock content %}
+
+<div
+  class="min-h-screen bg-gradient-to-b from-rose-50 via-purple-50 to-white py-12 md:py-16"
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div
+      class="bg-white rounded-3xl shadow-xl border border-purple-100/50 overflow-hidden"
+    >
+      <div
+        class="h-32 bg-gradient-to-r from-purple-500 via-pink-400 to-purple-600 relative"
+      >
+        <div class="absolute inset-0 bg-black/5"></div>
+      </div>
+
+      <div class="relative px-6 sm:px-10 pb-12 pt-0 -mt-16">
+        <!-- Profile Picture Section (unchanged) -->
+        <div
+          class="flex flex-col items-center sm:flex-row sm:items-end gap-6 mb-10"
+        >
+          <div class="relative group">
+            {% if user.profile.profile_pic %}
+            <img
+              src="{{ user.profile.profile_pic.url }}"
+              alt="{{ user.username }}"
+              class="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover border-4 border-white shadow-2xl"
+            />
+            {% else %}
+            <div
+              class="w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-5xl font-bold border-4 border-white shadow-2xl"
+            >
+              {{ user.username|slice:":1"|upper }}
+            </div>
+            {% endif %}
+
+            <label
+              for="id_profile_pic"
+              class="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+            >
+              <svg
+                class="w-10 h-10 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+            </label>
+          </div>
+
+          <div class="hidden">{{ form.profile_pic }}</div>
+
+          <div class="text-center sm:text-left">
+            <h1 class="text-3xl font-bold text-gray-900">Edit Profile</h1>
+            <p class="text-gray-600 mt-1">
+              Update your information • {{ user.username }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Improved Form -->
+        <form method="POST" enctype="multipart/form-data" class="space-y-8">
+          {% csrf_token %}
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+            {% for field in form %} {% if field.name != 'profile_pic' %}
+
+            <div class="relative">
+              <!-- Floating Label -->
+              <label
+                for="{{ field.id_for_label }}"
+                class="absolute left-4 -top-2.5 px-2 bg-white text-sm font-medium text-gray-600 transition-all pointer-events-none"
+              >
+                {{ field.label }} {% if field.field.required %}<span
+                  class="text-red-500"
+                  >*</span
+                >{% endif %}
+              </label>
+
+              <!-- Input Wrapper -->
+              <div class="relative">
+                {{ field }} {% if field.errors %}
+                <p class="mt-1.5 text-red-600 text-sm font-medium">
+                  {{ field.errors|striptags }}
+                </p>
+                {% endif %}
+              </div>
+
+              {% if field.help_text %}
+              <p class="mt-1.5 text-gray-500 text-xs">{{ field.help_text }}</p>
+              {% endif %}
+            </div>
+
+            {% endif %} {% endfor %}
+          </div>
+
+          <!-- Buttons -->
+          <div
+            class="pt-10 flex flex-col sm:flex-row gap-4 justify-end border-t border-gray-200 mt-10"
+          >
+            <a
+              href="{% url 'profile_detail' user.profile.slug %}"
+              class="order-2 sm:order-1 px-10 py-4 rounded-full border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-400 transition text-center"
+            >
+              Cancel
+            </a>
+
+            <button
+              type="submit"
+              class="order-1 sm:order-2 px-12 py-4 bg-purple-600 text-white font-semibold rounded-full hover:bg-purple-700 hover:shadow-xl transition shadow-lg flex items-center justify-center gap-3 transform hover:-translate-y-0.5"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <p class="text-center text-gray-500 text-sm mt-8">
+      Your changes will be saved securely.
+    </p>
+  </div>
+</div>
+
+{% endblock %}
